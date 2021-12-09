@@ -1,4 +1,4 @@
-# import RPi.GPIO as GPIO
+import RPi.GPIO as GPIO
 import time
 import datetime
 import requests
@@ -7,8 +7,21 @@ import os
 from urllib3.util.retry import Retry
 from requests.adapters import HTTPAdapter
 
+PRE_FEED_LED = 13
+MOTOR_ON_OFF = 12
+MOTOR_STEP = 11
+
+GPIO.setmode(GPIO.BOARD)
+GPIO.setup(MOTOR_ON_OFF, GPIO.OUT)
+GPIO.setup(MOTOR_STEP, GPIO.OUT)
+GPIO.setup(PRE_FEED_LED, GPIO.OUT)
+
 def feed():
-    time.sleep(0.15)
+    for i in range(1,15):
+        GPIO.output(PRE_FEED_LED ,GPIO.HIGH)
+        time.sleep(0.5)
+        GPIO.output(PRE_FEED_LED ,GPIO.LOW)
+        time.sleep(0.5)
 
 def doRequest(action = "", data = None):
     slug = os.environ.get("HEALTHCHECK_SLUG")
